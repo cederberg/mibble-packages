@@ -1,0 +1,24 @@
+#!/usr/bin/env sh
+#
+# Deploys an artifact (JAR file) to the local Maven repository.
+#
+# Syntax: mvn-deploy-file <artifact-id> <version> <file> [<pom-file>]
+
+ARTIFACT=$1
+VERSION=$2
+FILE=$3
+if [ "$4" != "" ] ; then
+    POM="-DpomFile=$4"
+else
+    POM="-DgeneratePom=true"
+fi
+
+mvn deploy:deploy-file \
+    -DgroupId=net.percederberg \
+    -DartifactId=${ARTIFACT} \
+    -Dversion=${VERSION} \
+    -Durl=file:./maven/ \
+    -DrepositoryId=net.percederberg \
+    -DupdateReleaseInfo=true \
+    ${POM} \
+    -Dfile=${FILE}
